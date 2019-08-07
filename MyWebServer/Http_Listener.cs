@@ -16,33 +16,34 @@ namespace MyWebServer
         {
             _requestDispatcher = new Dispatcher();
         }
-        public Socket StartListening(IPAddress iPAddress)
+        public Socket StartListening()
         {
-            _webServerSocket = new Socket(iPAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            _localEndPoint = new IPEndPoint(iPAddress, 8888);
+            _webServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            _localEndPoint = new IPEndPoint(IPAddress.Any, 8080);
             _webServerSocket.Bind(_localEndPoint);
             _webServerSocket.Listen(10);
             Console.WriteLine("Server started!!!!!!!!!");
             return _webServerSocket;
         }
 
-        public void OnConnectionReceived()
+        public void OnConnectionReceived(Socket webServerSocket)
         {
             try
             {
-                while(_webServerSocket.IsBound)
+                new Thread(_ =>
                 {
-                    Socket senderSocket = _webServerSocket.Accept();
-                    Console.WriteLine("connected");
-                    new Thread(_ =>
+                    while (true)
                     {
-                        _requestDispatcher.AssignWebApp(_webServerSocket);
+                        Socket senderSocket = webServerSocket.Accept();
+                        Console.WriteLine("connected");
+                        _requestDispatcher.AssignWebApp(senderSocket);
                         senderSocket.Shutdown(SocketShutdown.Both);
                         senderSocket.Close();
-                    }).Start();
-                }
+                    }
+                }).Start();
+                
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 Console.WriteLine("unable to connect to server");
             }

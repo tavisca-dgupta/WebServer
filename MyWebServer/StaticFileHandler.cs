@@ -21,7 +21,7 @@ namespace MyWebServer
             {
                 data = File.ReadAllText(filePath);
             }
-            catch (FileNotFoundException e)
+            catch (Exception)
             {
                 data = "<HTML><BODY><h1>404 Not Found</h1><p>Web Page not found!!!!!!!!!!!</p></BODY></HTML>";
             }

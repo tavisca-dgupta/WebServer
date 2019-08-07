@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,12 +18,9 @@ namespace MyWebServer
         }
         public void Run()
         {
-            http_Listener.StartListening(GetIPAddress());
-            http_Listener.OnConnectionReceived();
+            Socket webSocket=http_Listener.StartListening();
+            http_Listener.OnConnectionReceived(webSocket);
         }
-        private IPAddress GetIPAddress()
-        {
-            return Dns.GetHostEntry(Dns.GetHostName()).AddressList[0];
-        }
+        
     }
 }
