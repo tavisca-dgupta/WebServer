@@ -26,7 +26,7 @@ namespace MyWebServer
             return _webServerSocket;
         }
 
-        public void OnConnectionReceived(Socket webServerSocket)
+        public void OnConnectionReceived()
         {
             try
             {
@@ -34,7 +34,7 @@ namespace MyWebServer
                 {
                     while (true)
                     {
-                        Socket senderSocket = webServerSocket.Accept();
+                        Socket senderSocket = _webServerSocket.Accept();
                         Console.WriteLine("connected");
                         _requestDispatcher.AssignWebApp(senderSocket);
                         senderSocket.Shutdown(SocketShutdown.Both);

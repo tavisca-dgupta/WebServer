@@ -2,7 +2,7 @@
 {
     public interface IFileSystem:IHttpHandle
     {
-        string ResolveVirtualPath(string virtualPath, string rootDirectoryPath,string websiteUrl);
+       string ResolveVirtualPath(string virtualPath, string rootDirectoryPath,string websiteUrl);
         string TryGetFile(string filePath);
     }
 }

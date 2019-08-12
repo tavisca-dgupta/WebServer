@@ -8,20 +8,18 @@ namespace MyWebServer
 {
     public class HttpRequestParser
     {
-        public static string[] PraseRequest(string requestData)
+        public static string[] RequestParser(string requestData)
         {
             var requestParameters = requestData.Split('\n');
             string[] tokens = requestParameters[0].Split(' ');
-            if(tokens[0].ToLower().Equals("get"))
-            {
+           
                 return tokens;
-            }
-            else
-            {
-                Console.WriteLine("only get method supported");
-                return null;
-            }
+            
+        }
 
+        public static string[] GetRequestParameters(string requestData)
+        {
+            return requestData.Split('\n'); 
         }
     }
 }

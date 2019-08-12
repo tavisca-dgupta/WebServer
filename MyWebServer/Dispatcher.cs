@@ -11,10 +11,12 @@ namespace MyWebServer
     public class Dispatcher
     {
         private WebApp _webApp;
+        private ApiApp _apiApp;
         private WebAppMap _webAppMap;
         public Dispatcher()
         {
             _webAppMap = new WebAppMap();
+            _apiApp = new ApiApp();
         }
         public bool AssignWebApp(Socket senderSocket)
         {
@@ -22,9 +24,14 @@ namespace MyWebServer
             byte[] byteData = new byte[1024];
             int byteDataCount = communicationChannel.Read(byteData, 0, byteData.Length);
             string request = Encoding.ASCII.GetString(byteData, 0, byteDataCount);
-            string[] requestTokens = HttpRequestParser.PraseRequest(request);
+            string[] requestTokens = HttpRequestParser.RequestParser(request);
             string[] suburls = requestTokens[1].Split('/');
-            if (_webAppMap.IsWebAppPresent(suburls[1]))
+            if(suburls[1].Equals("Api"))
+            {
+                _apiApp.AssignRoute(request, requestTokens,senderSocket);
+                return true;
+            }
+            else if (_webAppMap.IsWebAppPresent(suburls[1]))
             {
                 _webApp = new WebApp("/"+suburls[1], _webAppMap.GetRootDirectory(suburls[1]),senderSocket);
                 _webApp.HandleRequest(requestTokens[1]);
@@ -32,16 +39,7 @@ namespace MyWebServer
             }
             else
             {
-                StringBuilder sbHeader = new StringBuilder();
-                sbHeader.AppendLine("HTTP/1.1 200 OK");
-                sbHeader.AppendLine("Content-Type: text/html" + ";charset=UTF-8");
-                sbHeader.AppendLine();
-                List<byte> response = new List<byte>();
-                response.AddRange(Encoding.ASCII.GetBytes(sbHeader.ToString()));
-                string file = "<HTML><BODY><h1>404 Not Found</h1><p>Web Page not found!!!!!!!!!!!</p></BODY></HTML>";
-                response.AddRange(Encoding.ASCII.GetBytes(file));
-                byte[] responseByte = response.ToArray();
-                senderSocket.Send(responseByte);
+                Error.PageNotFoundError(senderSocket);
                 return false;
             }
         }
