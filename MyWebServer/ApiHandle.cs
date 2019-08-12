@@ -43,7 +43,12 @@ namespace MyWebServer
         {
             int leapYear = 0;
             int.TryParse(year, out leapYear);
-            if(leapYear%4==0||leapYear%100==0)
+            if (leapYear % 100 == 0)
+            {
+                if (leapYear % 4 == 0)
+                    return true;
+            }
+            else if(leapYear % 4 == 0 )
             {
                 return true;
             }
