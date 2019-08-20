@@ -12,7 +12,7 @@ namespace MyWebServer
         public static void PageNotFoundError(Socket senderSocket)
         {
             StringBuilder sbHeader = new StringBuilder();
-            sbHeader.AppendLine("HTTP/1.1 404 OK");
+            sbHeader.AppendLine("HTTP/1.0 404 Not Found");
             sbHeader.AppendLine("Content-Type: text/html" + ";charset=UTF-8");
             sbHeader.AppendLine();
             List<byte> response = new List<byte>();

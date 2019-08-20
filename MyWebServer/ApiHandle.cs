@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyWebServer
 {
-    public class ApiHandle
+    public class RESTApi
     {
 
         public static void SendPostResponse(string requestBody,Socket senderSocket)
@@ -41,11 +41,12 @@ namespace MyWebServer
 
         private static bool IsLeapYear(string year)
         {
+            string[] tempArray = year.Split('}');
             int leapYear = 0;
-            int.TryParse(year, out leapYear);
+            int.TryParse(tempArray[0], out leapYear);
             if (leapYear % 100 == 0)
             {
-                if (leapYear % 4 == 0)
+              if (leapYear % 400 == 0)
                     return true;
             }
             else if(leapYear % 4 == 0 )

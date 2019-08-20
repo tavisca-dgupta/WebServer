@@ -23,9 +23,9 @@ namespace MyWebServer
             }
             catch (Exception)
             {
-                data = "<HTML><BODY><h1>404 Not Found</h1><p>Web Page not found!!!!!!!!!!!</p></BODY></HTML>";
+                return null;
             }
             return data;
         }
     }
-}
+} 

@@ -30,16 +30,23 @@ namespace MyWebServer
         }
         public void SendResponse()
         {
-            responseHeader = new StringBuilder();
-            responseHeader.AppendLine("HTTP/1.1 200 OK");
-            responseHeader.AppendLine("Content-Type: text/html" + ";charset=UTF-8");
-            responseHeader.AppendLine();
-            List<byte> response = new List<byte>();
-            response.AddRange(Encoding.ASCII.GetBytes(responseHeader.ToString()));
             string file = _staticFileHandler.TryGetFile(_filePath);
-            response.AddRange(Encoding.ASCII.GetBytes(file));
-            byte[] responseByte = response.ToArray();
-            _senderSocket.Send(responseByte);
+            if(string.IsNullOrEmpty(file))
+            {
+                Error.PageNotFoundError(_senderSocket);
+            }
+            else
+            {
+                responseHeader = new StringBuilder();
+                responseHeader.AppendLine("HTTP/1.1 200 OK");
+                responseHeader.AppendLine("Content-Type: text/html" + ";charset=UTF-8");
+                responseHeader.AppendLine();
+                List<byte> response = new List<byte>();
+                response.AddRange(Encoding.ASCII.GetBytes(responseHeader.ToString()));
+                response.AddRange(Encoding.ASCII.GetBytes(file));
+                byte[] responseByte = response.ToArray();
+                _senderSocket.Send(responseByte);
+            }
         }
     }
 }

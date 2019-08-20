@@ -12,17 +12,10 @@ namespace MyWebServer
         
         public void AssignRoute(string request,string[] token,Socket senderSocket)
         {
-            string[] requestBody;
-            if (token[0].Equals("POST"))
-            {
+                string[] requestBody;
                 requestBody = request.Split('{');
-                ApiHandle.SendPostResponse(requestBody[1],senderSocket);
-            }
-            else
-            {
-                ApiHandle.SendGetResponse("Year",senderSocket);
-            }
-
+                RestApi.SendResponse(request, token,senderSocket);
+            
         }
     }
 }

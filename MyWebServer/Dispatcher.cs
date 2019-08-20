@@ -28,7 +28,7 @@ namespace MyWebServer
             string[] suburls = requestTokens[1].Split('/');
             if(suburls[1].Equals("Api"))
             {
-                _apiApp.AssignRoute(request, requestTokens,senderSocket);
+                RestApi.SendResponse(request, requestTokens, senderSocket);
                 return true;
             }
             else if (_webAppMap.IsWebAppPresent(suburls[1]))

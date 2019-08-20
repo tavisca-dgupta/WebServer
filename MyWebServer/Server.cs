@@ -18,7 +18,7 @@ namespace MyWebServer
         }
         public void Run()
         {
-            Socket webSocket=http_Listener.StartListening();
+            http_Listener.StartListening();
             http_Listener.OnConnectionReceived();
         }
         
