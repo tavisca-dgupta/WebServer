@@ -36,10 +36,6 @@ namespace MyWebServer
             return false;
         }
 
-        [Method("POST","age")]
-        public string IsAdult(string requestBody)
-        {
-            return "Above 18";
-        }
+        
     }
 }
